@@ -114,8 +114,11 @@ function field_wrappers_preprocess_field(&$variables) {
  * Implements hook_process_field().
  */
 function field_wrappers_theme_registry_alter(&$theme_registry) {
-  $theme_registry['field']['template'] = drupal_get_path('module', 'field_wrappers') . '/field';
-  unset($theme_registry['field']['function']);
+  /// Only overwrite the template file if it isn't overwriteen by a theme.
+  if (!isset($theme_registry['field']['path'])) {
+    $theme_registry['field']['template'] = drupal_get_path('module', 'field_wrappers') . '/field';
+    unset($theme_registry['field']['function']);
+  }
 }
 
 /**
