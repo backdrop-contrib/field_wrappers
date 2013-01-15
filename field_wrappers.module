@@ -76,19 +76,22 @@ function field_wrappers_field_formatter_info_alter(&$info) {
  */
 function field_wrappers_field_attach_view_alter(&$output, $context) {
 
-  $entity_type = $output['#entity_type'];
-  $bundle = $output['#bundle'];
-  $view_mode = $context['view_mode'];
+  if (isset($output['#entity_type']) && isset($output['#bundle'])) {
 
-  // Append RDF term mappings on displayed taxonomy links.
-  foreach (element_children($output) as $field_name) {
-    $element = &$output[$field_name];
-    $instance = field_read_instance($entity_type, $field_name, $bundle);
-    $display = (isset($instance['display'][$view_mode]) ? $instance['display'][$view_mode] : $instance['display']['default']);
+    $entity_type = $output['#entity_type'];
+    $bundle = $output['#bundle'];
+    $view_mode = $context['view_mode'];
 
-    foreach (array_keys(_field_wrapper_types()) as $wrapper_key) {
-      if (isset($display['settings'][$wrapper_key])) {
-        $element['#' . $wrapper_key] = $display['settings'][$wrapper_key];
+    // Append RDF term mappings on displayed taxonomy links.
+    foreach (element_children($output) as $field_name) {
+      $element = &$output[$field_name];
+      $instance = field_read_instance($entity_type, $field_name, $bundle);
+      $display = (isset($instance['display'][$view_mode]) ? $instance['display'][$view_mode] : $instance['display']['default']);
+
+      foreach (array_keys(_field_wrapper_types()) as $wrapper_key) {
+        if (isset($display['settings'][$wrapper_key])) {
+          $element['#' . $wrapper_key] = $display['settings'][$wrapper_key];
+        }
       }
     }
   }
