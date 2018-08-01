@@ -2,7 +2,7 @@
 // $Id$
 
 /**
- *  @file 
+ *  @file
  *  Allows site administrators to choose which HTML wrappers are used in fields
  */
 
@@ -119,7 +119,7 @@ function field_wrappers_preprocess_field(&$variables) {
 function field_wrappers_theme_registry_alter(&$theme_registry) {
   /// Only overwrite the template file if it isn't overwriteen by a theme.
   if (!isset($theme_registry['field']['path'])) {
-    $theme_registry['field']['template'] = drupal_get_path('module', 'field_wrappers') . '/field';
+    $theme_registry['field']['template'] = backdrop_get_path('module', 'field_wrappers') . '/field';
     unset($theme_registry['field']['function']);
   }
 }
@@ -142,7 +142,7 @@ function field_wrapper_elements() {
     'strong' => t('STRONG'),
     'em' => t('EM'),
   );
-  drupal_alter('field_wrapper_elements', $wrapper_elements);
+  backdrop_alter('field_wrapper_elements', $wrapper_elements);
 
   return $wrapper_elements;
 }

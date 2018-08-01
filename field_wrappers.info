@@ -1,8 +1,8 @@
 ; $Id$
 name = Field Wrappers
 description = Allows site administrators to choose which HTML wrappers are used in fields
-core = 7.x
+backdrop = 1.x
+type = module
 
 dependencies[] = field
 
-files[] = field_wrappers.module
