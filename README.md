@@ -29,8 +29,6 @@ This module uses a template overwrite for Backdrop's core field.tpl.php. If your
 module or theme uses a customised template file for fields, you should take a 
 look at this one to make sure the wrappers are printed out correctly.
 
-![Field Multiple Limit](https://github.com/backdrop-contrib/field_wrappers/blob/1.x-1.x/images/field_wrappers.jpg "Field Multiple Limit example")
-
 ## Installation
 
 - Install this module using the official Backdrop CMS instructions at

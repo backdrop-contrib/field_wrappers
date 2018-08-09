@@ -44,11 +44,11 @@
  */
 ?>
 <?php if ($field_wrapper): ?>
-<<?php print $field_wrapper; ?> class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
+<<?php print $field_wrapper; ?> class="<?php print implode(' ', $classes); ?> clearfix"<?php print backdrop_attributes($attributes); ?>>
 <?php endif; ?>
   <?php if (!$label_hidden) : ?>
     <?php if ($label_wrapper): ?>
-    <<?php print $label_wrapper; ?> class="field-label"<?php print $title_attributes; ?>>
+    <<?php print $label_wrapper; ?> class="field-label"<?php print backdrop_attributes($title_attributes); ?>>
     <?php endif; ?>
       <?php print $label ?>:&nbsp;
     <?php if ($label_wrapper): ?>
@@ -57,7 +57,7 @@
   <?php endif; ?>
   <?php foreach ($items as $delta => $item) : ?>
     <?php if ($item_wrapper): ?>
-    <<?php print $item_wrapper; ?> class="field-item <?php print $delta % 2 ? 'odd' : 'even'; ?>"<?php print $item_attributes[$delta]; ?>>
+    <<?php print $item_wrapper; ?> class="field-item <?php print $delta % 2 ? 'odd' : 'even'; ?>"<?php print backdrop_attributes($item_attributes[$delta]); ?>>
     <?php endif; ?>
       <?php print render($item); ?>
     <?php if ($item_wrapper): ?>

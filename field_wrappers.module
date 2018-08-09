@@ -81,12 +81,15 @@ function field_wrappers_field_attach_view_alter(&$output, $context) {
     $entity_type = $output['#entity_type'];
     $bundle = $output['#bundle'];
     $view_mode = $context['view_mode'];
+    
 
     // Append RDF term mappings on displayed taxonomy links.
     foreach (element_children($output) as $field_name) {
       $element = &$output[$field_name];
       $instance = field_read_instance($entity_type, $field_name, $bundle);
-      $display = (isset($instance['display'][$view_mode]) ? $instance['display'][$view_mode] : $instance['display']['default']);
+      $display_mode_settings = field_view_mode_settings($entity_type, $bundle);
+      $display_mode_active = $display_mode_settings[$view_mode]['custom_settings'];
+      $display = ($display_mode_active && isset($instance['display'][$view_mode]) ? $instance['display'][$view_mode] : $instance['display']['default']);
       foreach (array_keys(_field_wrapper_types()) as $wrapper_key) {
         if (isset($display['settings'][$wrapper_key])) {
           $element['#' . $wrapper_key] = $display['settings'][$wrapper_key];
@@ -116,7 +119,7 @@ function field_wrappers_preprocess_field(&$variables) {
 function field_wrappers_theme_registry_alter(&$theme_registry) {
   /// Only overwrite the template file if it isn't overwriteen by a theme.
   if (!isset($theme_registry['field']['path'])) {
-    $theme_registry['field']['template'] = backdrop_get_path('module', 'field_wrappers') . '/field';
+    $theme_registry['field']['template'] = backdrop_get_path('module', 'field_wrappers') . '/templates/field';
     unset($theme_registry['field']['function']);
   }
 }
@@ -126,6 +129,7 @@ function field_wrappers_theme_registry_alter(&$theme_registry) {
  */
 function field_wrapper_elements() {
   $wrapper_elements = array(
+    '' => t('Use default'),
     '0' => t('- None -'),
     'div' => t('DIV'),
     'span' => t('SPAN'),
