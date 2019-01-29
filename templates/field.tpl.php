@@ -48,7 +48,7 @@
 <?php endif; ?>
   <?php if (!$label_hidden) : ?>
     <?php if ($label_wrapper): ?>
-    <<?php print $label_wrapper; ?> class="field-label"<?php print backdrop_attributes($title_attributes); ?>>
+    <<?php print $label_wrapper; ?> class="field-label"<?php if ($title_attributes) { print backdrop_attributes($title_attributes); } ?>>
     <?php endif; ?>
       <?php print $label ?>:&nbsp;
     <?php if ($label_wrapper): ?>
