@@ -1,82 +1,67 @@
 <?php
-// $Id$
 
 /**
- *  @file
- *  Allows site administrators to choose which HTML wrappers are used in fields
+ * @file
+ * Provides formatter settings for choosing HTML wrapper elements for fields.
+ *
  */
-
-/**
- * Implements hook_form_field_ui_display_form_alter().
- */
-function field_wrappers_form_field_ui_display_form_alter(&$form, $form_state) {
-
-  $wrapper_elements = field_wrapper_elements();
-
-  $entity_type = $form['#entity_type'];
-  $bundle = $form['#bundle'];
-  $view_mode = $form['#view_mode'];
-
-  $form['fields']['#header'][] = t('Field Wrappers');
-  foreach (element_children($form['fields']) as $name) {
-    $instance = field_info_instance($entity_type, $name, $bundle);
-    $display = $instance['display'][$view_mode];
-    $settings = (isset($form_state['formatter_settings'][$name]) ? $form_state['formatter_settings'][$name] : $display['settings']);
-    $wrapper_types = _field_wrapper_types();
-    $form['fields'][$name]['field_wrappers'] = array (
-      '#type' => 'fieldset',
-      '#title' => t('Wrappers'),
-      '#collapsible' => TRUE,
-      '#collapsed' => TRUE,
-    );
-    foreach ($wrapper_types as $wrapper_key => $wrapper_key_label) {
-      $form['fields'][$name]['field_wrappers'][$wrapper_key] = array(
-        '#type' => 'select',
-        '#title' => $wrapper_key_label,
-        '#options' => $wrapper_elements,
-        '#empty_option' => t('Use default'),
-        '#empty_value' => '',
-        '#default_value' => (isset($settings[$wrapper_key]) ? $settings[$wrapper_key] : ''),
-      );
-    }
-  }
-  $form['#submit'] = array_merge(array('field_wrappers_field_ui_display_form_submit'), $form['#submit']);
-
-  /* 
-  foreach (_field_wrapper_types() as $wrapper_key_label) {
-    $form['fields']['#header'][] = $wrapper_key_label;
-  }
-  */
-}
-
-/**
- * Implements hook_field_field_ui_display_form_submit().
- */
-function field_wrappers_field_ui_display_form_submit(&$form, &$form_state) {
-  $form_values = $form_state['values'];
-  $entity_type = $form['#entity_type'];
-  $bundle = $form['#bundle'];
-  $view_mode = $form['#view_mode'];
-
-  // Save data for 'regular' fields.
-  foreach ($form['#fields'] as $field_name) {
-    // Retrieve the stored instance settings to merge with the incoming values.
-    $instance = field_read_instance($entity_type, $field_name, $bundle);
-    foreach (array_keys(_field_wrapper_types()) as $wrapper_key) {
-      $instance['display'][$view_mode]['settings'][$wrapper_key] = $form_values['fields'][$field_name]['field_wrappers'][$wrapper_key];
-    }
-    field_update_instance($instance);
-  }
-}
 
 /**
  * Implements hook_field_formatter_info_alter().
  */
 function field_wrappers_field_formatter_info_alter(&$info) {
-  foreach (array_keys($info) as $name) {
-    foreach (array_keys(_field_wrapper_types()) as $wrapper_key) {
-      $info[$name]['settings'][$wrapper_key] = '';
+  // Added to all formatters.
+  $wrapper_types = _field_wrapper_types();
+  $wrapper_elements = field_wrapper_elements();
+  foreach ($info as $formatter_key => &$formatter) {
+    foreach ($wrapper_types as $wrapper_key => $wrapper_key_label) {
+      $formatter['settings']['field_wrappers'][$wrapper_key] = '-';
     }
+  }
+}
+
+/**
+ * Implements hook_field_formatter_settings_summary_alter().
+ */
+function field_wrappers_field_formatter_settings_summary_alter(&$summary, $context) {
+  $settings = $context['instance']['display'][$context['view_mode']]['settings'];
+
+  $wrapper_types = _field_wrapper_types();
+  $wrapper_elements = field_wrapper_elements();
+  foreach ($wrapper_types as $wrapper_key => $wrapper_key_label) {
+    // Don't update the summary if it's set to the default
+    if ($settings['field_wrappers'][$wrapper_key] != '-') {
+      if (!empty($summary)) {
+        $summary .= '<br />';
+      }
+      $summary .= t('@wrappertype: @element', array('@wrappertype' => $wrapper_key_label, '@element' => $wrapper_elements[$settings['field_wrappers'][$wrapper_key]]));
+    }
+  }
+  if (empty($summary)) {
+    $summary = t('Field wrappers: default');
+  }
+}
+
+/**
+ * Implements hook_field_formatter_settings_form_alter().
+ */
+function field_wrappers_field_formatter_settings_form_alter(&$settings_form, $context) {
+  $settings = $context['instance']['display'][$context['view_mode']]['settings'];
+  $wrapper_types = _field_wrapper_types();
+  $wrapper_elements = field_wrapper_elements();
+  $settings_form['field_wrappers'] = array (
+    '#type' => 'fieldset',
+    '#title' => t('Field Wrappers'),
+  );
+  foreach ($wrapper_types as $wrapper_key => $wrapper_key_label) {
+    $settings_form['field_wrappers'][$wrapper_key] = array(
+      '#type' => 'select',
+      '#title' => $wrapper_key_label,
+      '#options' => $wrapper_elements,
+      '#empty_option' => t('Use default'),
+      '#empty_value' => '-',
+      '#default_value' => (isset($settings['field_wrappers'][$wrapper_key]) ? $settings['field_wrappers'][$wrapper_key] : '-'),
+    );
   }
 }
 
@@ -91,8 +76,6 @@ function field_wrappers_field_attach_view_alter(&$output, $context) {
     $bundle = $output['#bundle'];
     $view_mode = $context['view_mode'];
     
-
-    // Append RDF term mappings on displayed taxonomy links.
     foreach (element_children($output) as $field_name) {
       $element = &$output[$field_name];
       $instance = field_read_instance($entity_type, $field_name, $bundle);
@@ -142,7 +125,7 @@ function field_wrappers_theme_registry_alter(&$theme_registry) {
  */
 function field_wrapper_elements() {
   $wrapper_elements = array(
-    '' => t('Use default'),
+    '-' => t('Use default'),
     '0' => t('- None -'),
     'div' => t('DIV'),
     'span' => t('SPAN'),

@@ -5,4 +5,5 @@ backdrop = 1.x
 type = module
 
 dependencies[] = field
+dependencies[] = field_formatter_settings
 
