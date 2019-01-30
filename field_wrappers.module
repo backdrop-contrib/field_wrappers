@@ -87,8 +87,8 @@ function field_wrappers_field_attach_view_alter(&$output, $context) {
       }
       $display = ($display_mode_active && isset($instance['display'][$view_mode]) ? $instance['display'][$view_mode] : $instance['display']['default']);
       foreach (array_keys(_field_wrapper_types()) as $wrapper_key) {
-        if (isset($display['settings'][$wrapper_key])) {
-          $element['#' . $wrapper_key] = $display['settings'][$wrapper_key];
+        if (isset($display['settings']['field_wrappers'][$wrapper_key])) {
+          $element['#' . $wrapper_key] = $display['settings']['field_wrappers'][$wrapper_key];
         }
       }
     }
@@ -103,7 +103,7 @@ function field_wrappers_preprocess_field(&$variables) {
   foreach (array_keys(_field_wrapper_types()) as $wrapper_key) {
     // Set the default wrapper.
     $variables[$wrapper_key] = 'div';
-    if (isset($element['#' . $wrapper_key]) && $element['#' . $wrapper_key] !== '') {
+    if (isset($element['#' . $wrapper_key]) && $element['#' . $wrapper_key] !== '-') {
       $variables[$wrapper_key] = ($element['#' . $wrapper_key] == '0' ? '' : $element['#' . $wrapper_key]);
     }
   }
