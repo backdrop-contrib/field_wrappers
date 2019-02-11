@@ -1,21 +1,28 @@
 <?php
-// $Id: field.tpl.php,v 1.13 2010/03/26 17:14:45 dries Exp $
-
 /**
  * @file field.tpl.php
  * Default template implementation to display the value of a field.
  *
- * This file is not used and is here as a starting point for customization only.
- * @see theme_field()
+ * This file is not used by core, which uses theme functions instead for
+ * performance reasons. The markup is the same, though, so if you want to use
+ * template files rather than functions to extend field theming, copy this to
+ * your custom theme. See theme_field() for a discussion of performance.
+ *
+ * Copy this file and place it inside your theme. You'll likely want to rename
+ * the file so that it only affects the field you are trying to override.
+ * Possible file names for template suggestions include:
+ * - field.tpl.php
+ * - field--field-type.tpl.php
+ * - field--field-name.tpl.php
+ * - field--content-type.tpl.php
+ * - field--field-name--content-type.tpl.php
  *
  * Available variables:
  * - $items: An array of field values. Use render() to output them.
  * - $label: The item label.
  * - $label_hidden: Whether the label display is set to 'hidden'.
- * - $classes: String of classes that can be used to style contextually through
- *   CSS. It can be manipulated through the variable $classes_array from
- *   preprocess functions. The default values can be one or more of the
- *   following:
+ * - $classes: Array of classes that can be used to style contextually through
+ *   CSS. The default values can be one or more of the following:
  *   - field: The current template type, i.e., "theming hook".
  *   - field-name-[field_name]: The current field name. For example, if the
  *     field name is "field_description" it would result in
@@ -27,7 +34,7 @@
  *
  * Other variables:
  * - $element['#object']: The entity to which the field is attached.
- * - $element['#view_mode']: View mode, e.g. 'full', 'teaser'...
+ * - $element['#view_mode']: Display mode, e.g. 'full' or 'teaser'.
  * - $element['#field_name']: The field name.
  * - $element['#field_type']: The field type.
  * - $element['#field_language']: The field language.
@@ -36,34 +43,48 @@
  *   hidden.
  * - $field_name_css: The css-compatible field name.
  * - $field_type_css: The css-compatible field type.
- * - $classes_array: Array of html class attribute values. It is flattened
- *   into a string within the variable $classes.
  *
  * @see template_preprocess_field()
  * @see theme_field()
+ *
+ * @ingroup themeable
  */
 ?>
 <?php if ($field_wrapper): ?>
-<<?php print $field_wrapper; ?> class="<?php print implode(' ', $classes); ?> clearfix"<?php print backdrop_attributes($attributes); ?>>
+  <<?php print $field_wrapper; ?> class="<?php print implode(' ', $classes); ?> clearfix"<?php print backdrop_attributes($attributes); ?>>
+<?php else: ?>
+  <div class="<?php print implode(' ', $classes); ?>"<?php print backdrop_attributes($attributes); ?>>
 <?php endif; ?>
-  <?php if (!$label_hidden) : ?>
+  <?php if (!$label_hidden): ?>
     <?php if ($label_wrapper): ?>
-    <<?php print $label_wrapper; ?> class="field-label"<?php if ($title_attributes) { print backdrop_attributes($title_attributes); } ?>>
+      <<?php print $label_wrapper; ?> class="field-label"<?php if (isset($title_attributes)) { print backdrop_attributes($title_attributes); } ?>>
+    <?php else: ?>
+      <div class="field-label">
     <?php endif; ?>
       <?php print $label ?>:&nbsp;
     <?php if ($label_wrapper): ?>
     </<?php print $label_wrapper; ?>>
+    <?php else: ?>
+      </div>
     <?php endif; ?>
   <?php endif; ?>
-  <?php foreach ($items as $delta => $item) : ?>
-    <?php if ($item_wrapper): ?>
-    <<?php print $item_wrapper; ?> class="field-item <?php print $delta % 2 ? 'odd' : 'even'; ?>"<?php print backdrop_attributes($item_attributes[$delta]); ?>>
-    <?php endif; ?>
-      <?php print render($item); ?>
-    <?php if ($item_wrapper): ?>
-    </<?php print $item_wrapper; ?>>
-    <?php endif; ?>
-  <?php endforeach; ?>
+  <div class="field-items"<?php print backdrop_attributes($content_attributes); ?>>
+    <?php foreach ($items as $delta => $item) : ?>
+      <?php if ($item_wrapper): ?>
+        <<?php print $item_wrapper; ?> class="field-item <?php print $delta % 2 ? 'odd' : 'even'; ?>"<?php print backdrop_attributes($item_attributes[$delta]); ?>>
+      <?php else: ?>
+        <div class="field-item <?php print $delta % 2 ? 'odd' : 'even'; ?>"<?php print backdrop_attributes($item_attributes[$delta]); ?>>
+      <?php endif; ?>
+        <?php print render($item); ?>
+      <?php if ($item_wrapper): ?>
+        </<?php print $item_wrapper; ?>>
+      <?php else: ?>
+        </div>
+      <?php endif; ?>
+    <?php endforeach; ?>
+  </div>
 <?php if ($field_wrapper): ?>
-</<?php print $field_wrapper; ?>>
+  </<?php print $field_wrapper; ?>>
+<?php else: ?>
+  </div>
 <?php endif; ?>
