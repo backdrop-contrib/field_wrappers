@@ -60,6 +60,8 @@
       <?php print $label ?>:&nbsp;
     <?php if ($label_wrapper): ?>
     </<?php print $label_wrapper; ?>>
+    <?php else: ?>
+      </div>
     <?php endif; ?>
   <?php endif; ?>
   <div class="field-items"<?php print backdrop_attributes($content_attributes); ?>>
