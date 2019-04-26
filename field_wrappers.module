@@ -30,7 +30,7 @@ function field_wrappers_field_formatter_settings_summary_alter(&$summary, $conte
   $wrapper_elements = field_wrapper_elements();
   foreach ($wrapper_types as $wrapper_key => $wrapper_key_label) {
     // Don't update the summary if it's set to the default
-    if ($settings['field_wrappers'][$wrapper_key] != '-') {
+    if (isset($settings['field_wrappers']) && $settings['field_wrappers'][$wrapper_key] != '-') {
       if (!empty($summary)) {
         $summary .= '<br />';
       }

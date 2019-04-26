@@ -52,39 +52,27 @@
 ?>
 <?php if ($field_wrapper): ?>
   <<?php print $field_wrapper; ?> class="<?php print implode(' ', $classes); ?> clearfix"<?php print backdrop_attributes($attributes); ?>>
-<?php else: ?>
-  <div class="<?php print implode(' ', $classes); ?>"<?php print backdrop_attributes($attributes); ?>>
 <?php endif; ?>
   <?php if (!$label_hidden): ?>
     <?php if ($label_wrapper): ?>
       <<?php print $label_wrapper; ?> class="field-label"<?php if (isset($title_attributes)) { print backdrop_attributes($title_attributes); } ?>>
-    <?php else: ?>
-      <div class="field-label">
     <?php endif; ?>
       <?php print $label ?>:&nbsp;
     <?php if ($label_wrapper): ?>
     </<?php print $label_wrapper; ?>>
-    <?php else: ?>
-      </div>
     <?php endif; ?>
   <?php endif; ?>
   <div class="field-items"<?php print backdrop_attributes($content_attributes); ?>>
     <?php foreach ($items as $delta => $item) : ?>
       <?php if ($item_wrapper): ?>
         <<?php print $item_wrapper; ?> class="field-item <?php print $delta % 2 ? 'odd' : 'even'; ?>"<?php print backdrop_attributes($item_attributes[$delta]); ?>>
-      <?php else: ?>
-        <div class="field-item <?php print $delta % 2 ? 'odd' : 'even'; ?>"<?php print backdrop_attributes($item_attributes[$delta]); ?>>
       <?php endif; ?>
         <?php print render($item); ?>
       <?php if ($item_wrapper): ?>
         </<?php print $item_wrapper; ?>>
-      <?php else: ?>
-        </div>
       <?php endif; ?>
     <?php endforeach; ?>
   </div>
 <?php if ($field_wrapper): ?>
   </<?php print $field_wrapper; ?>>
-<?php else: ?>
-  </div>
 <?php endif; ?>
