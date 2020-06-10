@@ -19,6 +19,9 @@ following default set of markup types as wrapper for your field elements:
  - P
  - STRONG
  - EM
+ 
+If an outer field wrapper is selected, you also have the ability to add a CSS
+class to the outer wrapper.
 
 Other modules (or themes) can alter this list using 
 `hook_field_wrapper_elements_alter()`.
@@ -26,7 +29,7 @@ Other modules (or themes) can alter this list using
 ### Note for Theme Developers:
 
 This module uses a template overwrite for Backdrop's core field.tpl.php. If your
-module or theme uses a customised template file for fields, you should take a 
+module or theme uses a customized template file for fields, you should take a 
 look at this one to make sure the wrappers are printed out correctly.
 
 ## Installation
@@ -48,6 +51,10 @@ Bugs and Feature requests should be reported in the
 - Ported to Backdrop CMS by [Laryn Kragt Bakker](https://github.com/laryn) - [CEDC.org](https://cedc.org).
 - Maintained for Drupal by [skilip](https://www.drupal.org/u/skilip).
 - Originally developed for the [Dutch House of Representatives](http://www.houseofrepresentatives.nl/).
+- The ability to add a class to the outer wrapper was merged in from the 
+  Drupal [Field Formatter Class](https://www.drupal.org/project/field_formatter_class) module.
+  Thank you to the maintainers of that module: [andrewmacpherson](https://www.drupal.org/u/andrewmacpherson),
+  [pifagor](https://www.drupal.org/u/pifagor), and [mfer](https://www.drupal.org/u/mfer).
 
 ## License
 
