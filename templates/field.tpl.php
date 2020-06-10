@@ -51,7 +51,7 @@
  */
 ?>
 <?php if ($field_wrapper): ?>
-  <<?php print $field_wrapper; ?> class="<?php print implode(' ', $classes); ?> clearfix"<?php print backdrop_attributes($attributes); ?>>
+  <<?php print $field_wrapper; ?> class="<?php print implode(' ', $classes); ?>"<?php print backdrop_attributes($attributes); ?>>
 <?php endif; ?>
   <?php if (!$label_hidden): ?>
     <?php if ($label_wrapper): ?>
