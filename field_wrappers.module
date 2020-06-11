@@ -74,7 +74,7 @@ function field_wrappers_field_formatter_settings_form_alter(&$settings_form, $co
   $settings_form['field_wrappers']['field_wrapper_class'] = array(
     '#type' => 'textfield',
     '#title' => t('Field Wrapper Class'),
-    '#default_value' => $settings['field_wrappers']['field_wrapper_class'],
+    '#default_value' => (!empty($settings['field_wrappers']['field_wrapper_class'])) ? $settings['field_wrappers']['field_wrapper_class'] : '',
     '#states' => array(
         'invisible' => array(
             ':input[name="fields[field_position][settings_edit_form][settings][field_wrappers][field_wrapper]"]' => array('value' => '0'),
