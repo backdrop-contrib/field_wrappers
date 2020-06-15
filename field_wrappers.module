@@ -83,7 +83,7 @@ function field_wrappers_field_formatter_settings_form_alter(&$settings_form, $co
   );
   $settings_form['field_wrappers']['field_wrapper_class_token'] = array(
     '#type' => 'container',
-    '#theme' => 'token_tree',
+    '#theme' => 'token_tree_link',
     '#token_types' => array($context['instance']['entity_type']),
     '#dialog' => TRUE,
     '#states' => array(
