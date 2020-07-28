@@ -77,7 +77,7 @@ function field_wrappers_field_formatter_settings_form_alter(&$settings_form, $co
     '#default_value' => (!empty($settings['field_wrappers']['field_wrapper_class'])) ? $settings['field_wrappers']['field_wrapper_class'] : '',
     '#states' => array(
         'invisible' => array(
-            ':input[name="fields[field_position][settings_edit_form][settings][field_wrappers][field_wrapper]"]' => array('value' => '0'),
+            ':input[name="fields[' . $context['field']['field_name'] . '][settings_edit_form][settings][field_wrappers][field_wrapper]"]' => array('value' => '0'),
         ),
     ),
   );
@@ -88,7 +88,7 @@ function field_wrappers_field_formatter_settings_form_alter(&$settings_form, $co
     '#dialog' => TRUE,
     '#states' => array(
         'invisible' => array(
-            ':input[name="fields[field_position][settings_edit_form][settings][field_wrappers][field_wrapper]"]' => array('value' => '0'),
+            ':input[name="fields[' . $context['field']['field_name'] . '][settings_edit_form][settings][field_wrappers][field_wrapper]"]' => array('value' => '0'),
         ),
     ),
   );
