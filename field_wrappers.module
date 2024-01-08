@@ -129,6 +129,13 @@ function field_wrappers_field_attach_view_alter(&$output, $context) {
  */
 function field_wrappers_preprocess_field(&$variables) {
   $element = $variables['element'];
+  // If this is a pseudo field without field info, bail out.
+  if (empty(field_info_field($element['#field_name']))) {
+    foreach (array_keys(_field_wrapper_types()) as $wrapper_key) {
+      $variables[$wrapper_key] = NULL;
+    }
+    return;
+  }
   foreach (array_keys(_field_wrapper_types()) as $wrapper_key) {
     // Set the default wrapper.
     $variables[$wrapper_key] = 'div';
