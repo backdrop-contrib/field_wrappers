@@ -131,9 +131,9 @@ function field_wrappers_preprocess_field(&$variables) {
   $element = $variables['element'];
   // If this is a pseudo field without field info, bail out.
   if (empty(field_info_field($element['#field_name']))) {
-    $variables['field_wrapper'] = NULL;
-    $variables['label_wrapper'] = NULL;
-    $variables['item_wrapper'] = NULL;
+    foreach (array_keys(_field_wrapper_types()) as $wrapper_key) {
+      $variables[$wrapper_key] = NULL;
+    }
     return;
   }
   foreach (array_keys(_field_wrapper_types()) as $wrapper_key) {
